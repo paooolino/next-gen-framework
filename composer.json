@@ -4,9 +4,6 @@
         "twig/twig": "~1.0",
 				"gabordemooij/redbean": "dev-master"
     },
-		"require-dev": {
-				"phpunit/phpunit": "5.5.*"
-		},
 		"autoload": {
 				"psr-4": {
 						"NgFramework\\": "lib/"
