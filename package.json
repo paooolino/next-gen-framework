@@ -1,0 +1,21 @@
+{
+  "name": "next-gen-framework",
+  "version": "1.0.0",
+  "description": "built-in php server\r ====================\r npm run start",
+  "main": "index.js",
+  "scripts": {
+		"start": "php -S localhost:8000 web/routing.php",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paooolino/next-gen-framework.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paooolino/next-gen-framework/issues"
+  },
+  "homepage": "https://github.com/paooolino/next-gen-framework#readme"
+}
