@@ -9,5 +9,10 @@
 						"NgFramework\\": "lib/",
 						"App\\": "app/"
 				}
+		},
+		"autoload-dev": {
+				"psr-4": {
+						"App\\": "tests/helpers/"
+				}
 		}
 }

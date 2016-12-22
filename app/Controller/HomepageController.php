@@ -1,9 +1,11 @@
 <?php
 namespace App\Controller;
 
-class HomepageController
+use \NgFramework\Core\Controller;
+
+class HomepageController extends Controller
 {
 	public function show() {
-		echo "helloWorld";
+		$this->render("Hello, world!");
 	}
 }
