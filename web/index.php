@@ -15,5 +15,5 @@ require_once __DIR__ . '/../vendor/autoload.php';
  * Bootstrap router
  */
 require_once __DIR__ . '/../config/routes.php';
-$router = new \NgFramework\Router($routes);
-
+$router = new \NgFramework\Core\Router($routes);
+$router->execute($_SERVER["REQUEST_URI"]);

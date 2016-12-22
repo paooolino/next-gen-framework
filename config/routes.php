@@ -8,6 +8,5 @@
  * '/' => 'Homepage#show',
  * '/calendar' => 'calendar#index'
  */
-$routes = array(
-	'/' => 'Homepage#show'
-);
+$routes = [];
+$routes[] = ["GET", "/", "Homepage#show"];
