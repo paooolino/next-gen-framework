@@ -1,35 +1,77 @@
 <?php
+/**
+ *	The Router.
+ */
+ 
 namespace NgFramework\Core;
 
 use \Klein\Klein;
 
+/**
+ *	The Router class definition.
+ */
 class Router
 {
-	private $klein;
+	/**
+	 *
+	 */
+	private $routes;
 	
+	/**
+	 * @param array $routes
+	 */
 	public function __construct($routes) 
 	{
-		$this->klein = new Klein();
 		foreach ($routes as $route) {
-			list($controllerName, $methodName) = explode("#", $route[2]);
-			$controller = $this->_getController($controllerName);
-			$this->klein->respond(
-				$route[0], // the method (GET|POST|...)
-				$route[1], // the pattern
-				array($controller, $methodName)	// the (class, method) to call
-			);
+			$this->addRoute($route);
 		}
-		$this->klein->onHttpError(function ($code, $router) {
-			$controller = new \NgFramework\Core\ErrorController($code, $router);
-			$controller->show($code);
-		});
 	}
 	
+	/**
+	 * 
+	 */
+	public function getRoutes()
+	{
+		return $this->routes;
+	}
+	
+	/**
+	 * @param array $route
+	 */
+	public function addRoute($route)
+	{
+		list($controller, $action) = explode("#", $route[2]);
+		$this->routes[] = array(
+			"method" => $route[0], 
+			"pattern" => $route[1], 
+			"controller" => $controller, 
+			"action" => $action
+		);
+	}
+	
+	/**
+	 * Process the route and calls the right controller.
+	 *
+	 * @param string $uri
+	 */
 	public function execute($uri)
 	{
-		$this->klein->dispatch();
+		$klein = new Klein();
+		foreach ($this->routes as $r) {
+			$klein->respond(
+				$r["method"],
+				$r["pattern"],
+				$this->_getController($r["controller"]), $r["action"]
+			);
+		}
+		$klein->dispatch();
 	}
-	
+
+	/**
+	 * Get an instance of a controller type based on the provided name.
+	 *
+	 * @param string $name
+	 */	
 	private function _getController($name)
 	{
 		$controller = '\\App\\Controller\\' . ucfirst($name) . 'Controller';
