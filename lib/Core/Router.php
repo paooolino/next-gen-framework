@@ -61,7 +61,7 @@ class Router
 			$klein->respond(
 				$r["method"],
 				$r["pattern"],
-				$this->_getController($r["controller"]), $r["action"]
+				array($this->_getController($r["controller"]), $r["action"])
 			);
 		}
 		$klein->dispatch();

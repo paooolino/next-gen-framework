@@ -6,6 +6,8 @@ use \NgFramework\Core\Controller;
 class HomepageController extends Controller
 {
 	public function show() {
-		$this->render("Hello, world!");
+		$data = [];
+		$data["content"] = "Hello, world!";
+		$this->render($data, "index");
 	}
 }
