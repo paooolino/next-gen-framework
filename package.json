@@ -4,7 +4,7 @@
   "description": "built-in php server\r ====================\r npm run start",
   "main": "index.js",
   "scripts": {
-		"start": "php -S localhost:8000 web/routing.php",
+		"start": "php -S localhost:8000 -t web web/routing.php",
     "test": "phpunit --bootstrap vendor/autoload.php tests"
   },
   "repository": {

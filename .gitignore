@@ -4,6 +4,16 @@ vendor/
 
 # Auto-generated documentation directory (phpDocumentor)
 docs/
+coverage/
 
 # Auto-generated code coverage report
 report/
+
+# App code
+app/
+
+# Web folder
+bower.json
+bower_components/
+img/
+css/

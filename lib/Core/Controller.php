@@ -2,14 +2,26 @@
 /**
  *	The Controller.
  */
+ 
 namespace NgFramework\Core;
+
+use \NgFramework\Exception\FileNotFoundException;
 
 /**
  *	The Controller base class.
  */
 class Controller
 {
+	private $router;
 	private $data;
+	
+	/**
+	 *
+	 */
+	public function __construct($router = null)
+	{
+		$this->router = $router;
+	}
 	
 	/**
 	 * Render function.
@@ -26,7 +38,7 @@ class Controller
 			if (!is_string($data)) {
 				throw new \Exception('Data should be a string.');
 			} else {
-				echo $data;
+				return $data;
 			}
 		} else {
 			if (!is_array($data)) {
@@ -34,8 +46,9 @@ class Controller
 			} else {
 				$loader = new \Twig_Loader_Filesystem('app/View');
 				$twig = new \Twig_Environment($loader);
+				$twig->addGlobal('router', $this->router);
 				$template = $twig->load($template_name . ".html");
-				echo $template->render($data);
+				return $template->render($data);
 			}
 		}
 	}

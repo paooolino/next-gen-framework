@@ -5,6 +5,7 @@
  
 namespace NgFramework\Core;
 
+use \NgFramework\Exception\ClassNotFoundException;
 use \Klein\Klein;
 
 /**
@@ -16,15 +17,21 @@ class Router
 	 *
 	 */
 	private $routes;
+	private $router_app;
 	
 	/**
 	 * @param array $routes
 	 */
 	public function __construct($routes) 
 	{
+		$this->router_app = new Klein();
 		foreach ($routes as $route) {
 			$this->addRoute($route);
 		}
+	}
+	
+	public function getResponseBody() {
+		return $this->router_app->response()->body();
 	}
 	
 	/**
@@ -33,6 +40,17 @@ class Router
 	public function getRoutes()
 	{
 		return $this->routes;
+	}
+	
+	/**
+	 *
+	 */
+	public function link($route_name) {
+		foreach ($this->routes as $r) {
+			if ($route_name == $r["controller"] . "#" . $r["action"]) {
+				return $r["pattern"];
+			}
+		}
 	}
 	
 	/**
@@ -56,15 +74,18 @@ class Router
 	 */
 	public function execute($uri)
 	{
-		$klein = new Klein();
 		foreach ($this->routes as $r) {
-			$klein->respond(
+			$callable = array($this->_getController($r["controller"]), $r["action"]);
+			if (!is_callable($callable)) {
+				throw new \BadMethodCallException ("Please create a ". $r["action"] ." method in ". ucfirst($r["controller"]) ."Controller class in the app/Controller/'" . ucfirst($r["controller"]) . "Controller.php file.");
+			}
+			$this->router_app->respond(
 				$r["method"],
 				$r["pattern"],
-				array($this->_getController($r["controller"]), $r["action"])
+				$callable
 			);
 		}
-		$klein->dispatch();
+		$this->router_app->dispatch();
 	}
 
 	/**
@@ -74,7 +95,10 @@ class Router
 	 */	
 	private function _getController($name)
 	{
-		$controller = '\\App\\Controller\\' . ucfirst($name) . 'Controller';
-		return new $controller();
+		$controller_name = '\\App\\Controller\\' . ucfirst($name) . 'Controller';
+		if (!class_exists($controller_name)) {
+			throw new ClassNotFoundException("Please create a ". ucfirst($name). "Controller class in the app/Controller/" . ucfirst($name) . "Controller.php file.");
+		}
+		return new $controller_name($this);
 	}
 }

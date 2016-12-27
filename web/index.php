@@ -3,6 +3,7 @@
  * Environment settings
  */
 ini_set('display_errors', 1);
+define( 'REDBEAN_MODEL_PREFIX', '\\App\\Model\\' );
 
 /**
  * Autoloading vendor and framework classes as defined in composer.json
